@@ -1,9 +1,11 @@
 import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { ApiserviceService } from '../services/apiservice.service';
 
 @Component({
   selector: 'app-json-schema',
-  imports: [],
+  imports: [CommonModule, FormsModule],
   templateUrl: './json-schema.component.html',
   styleUrl: './json-schema.component.css'
 })

@@ -1,1 +1,82 @@
-<p>json-schema works!</p>
+<div class="page-container">
+
+    <!-- Header -->
+    <div class="page-header">
+        <div class="concept-badge">02</div>
+        <div>
+            <h1 class="page-title">📐 JSON Schema via System Prompt</h1>
+            <p class="page-subtitle">Write a system prompt that reliably returns structured JSON matching a schema.</p>
+        </div>
+    </div>
+
+    <!-- Presets -->
+    <div class="presets-row">
+        <span class="presets-label">Try a preset:</span>
+        <button *ngFor="let p of presets" class="preset-btn" (click)="usePreset(p)">{{ p | slice:0:30 }}…</button>
+    </div>
+
+    <!-- Input Card -->
+    <div class="card">
+        <label class="card-label">Product Description (natural language)</label>
+        <textarea class="input-textarea" [(ngModel)]="userPrompt" rows="3"
+            placeholder="Describe a product in plain English..."></textarea>
+
+        <div class="card-actions">
+            <button class="btn-secondary" (click)="showSystemPrompt = !showSystemPrompt">
+                {{ showSystemPrompt ? 'Hide' : 'Show' }} System Prompt
+            </button>
+            <button class="btn-primary" (click)="generate()" [disabled]="loading">
+                <span *ngIf="!loading">Generate JSON →</span>
+                <span *ngIf="loading" class="spinner">Generating…</span>
+            </button>
+        </div>
+
+        <!-- System Prompt Preview -->
+        <div class="system-prompt-box" *ngIf="showSystemPrompt && result?.system_prompt_used">
+            <div class="system-prompt-label">System Prompt Sent to Claude</div>
+            <pre class="code-block">{{ result.system_prompt_used }}</pre>
+        </div>
+    </div>
+
+    <!-- Error -->
+    <div class="error-banner" *ngIf="error">⚠️ {{ error }}</div>
+
+    <!-- Results -->
+    <div *ngIf="result" class="results-grid">
+
+        <!-- Two-column: Schema + Output -->
+        <div class="two-col">
+
+            <!-- Schema -->
+            <div class="card">
+                <div class="section-title">📋 Schema Definition</div>
+                <p class="section-hint">Fields the model must follow:</p>
+                <div class="schema-fields">
+                    <div *ngFor="let f of schemaFields()" class="schema-field">
+                        <span class="field-name">{{ f.key }}</span>
+                        <span class="field-type">{{ f.type }}</span>
+                        <span class="field-required" *ngIf="f.required">required</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Parsed Output -->
+            <div class="card">
+                <div class="section-header">
+                    <div class="section-title">✅ Parsed JSON Output</div>
+                    <span class="badge-success" *ngIf="result.valid_json">Valid JSON</span>
+                    <span class="badge-error" *ngIf="!result.valid_json">Invalid JSON</span>
+                </div>
+                <pre class="code-block json-output">{{ prettyJson }}</pre>
+            </div>
+
+        </div>
+
+        <!-- Raw Response -->
+        <div class="card" *ngIf="result.raw_response">
+            <div class="section-title">Raw Claude Response</div>
+            <pre class="code-block muted">{{ result.raw_response }}</pre>
+        </div>
+
+    </div>
+</div>
