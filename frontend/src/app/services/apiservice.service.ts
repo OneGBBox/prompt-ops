@@ -10,16 +10,16 @@ export class ApiserviceService {
   private baseUrl = 'http://localhost:8000/api';
   constructor(private http: HttpClient) { }
   fewShotGenerate(input: string): Observable<any> {
-    return this.http.post(`${this.baseUrl}/few-shot/generate`, { input });
+    return this.http.post(`${this.baseUrl}/few-shot/generate`, { user_input: input });
   }
   tokensContext(input: string): Observable<any> {
-    return this.http.post(`${this.baseUrl}/tokens-context`, { input });
+    return this.http.post(`${this.baseUrl}/tokens/analyze`, { text: input });
   }
   jsonSchema(input: string): Observable<any> {
-    return this.http.post(`${this.baseUrl}/json-schema/generate`, { input });
+    return this.http.post(`${this.baseUrl}/json-schema/generate`, { user_prompt: input });
   }
   temperature(input: string): Observable<any> {
-    return this.http.post(`${this.baseUrl}/temperature/compare`, { input });
+    return this.http.post(`${this.baseUrl}/temperature/compare`, { prompt: input });
   }
   //call health endpoint
   health(): Observable<any> {
