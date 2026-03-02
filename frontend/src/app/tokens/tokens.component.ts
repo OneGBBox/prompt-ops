@@ -1,9 +1,11 @@
 import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { ApiserviceService } from '../services/apiservice.service';
 
 @Component({
   selector: 'app-tokens',
-  imports: [],
+  imports: [CommonModule, FormsModule],
   templateUrl: './tokens.component.html',
   styleUrl: './tokens.component.css'
 })

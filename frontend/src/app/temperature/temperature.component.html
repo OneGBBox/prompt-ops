@@ -1,1 +1,78 @@
-<p>temperature works!</p>
+<div class="page-container">
+
+    <!-- Header -->
+    <div class="page-header">
+        <div class="concept-badge">03</div>
+        <div>
+            <h1 class="page-title">🌡️ Temperature: 0 vs 1</h1>
+            <p class="page-subtitle">Run the same prompt at temp=0 (deterministic) and temp=1 (creative) and compare
+                outputs.</p>
+        </div>
+    </div>
+
+    <!-- Presets -->
+    <div class="presets-row">
+        <span class="presets-label">Try a preset:</span>
+        <button *ngFor="let p of presets" class="preset-btn" (click)="usePreset(p)">{{ p | slice:0:35 }}…</button>
+    </div>
+
+    <!-- Input Card -->
+    <div class="card">
+        <label class="card-label">Prompt (sent twice — once at each temperature)</label>
+        <textarea class="input-textarea" [(ngModel)]="prompt" rows="3" placeholder="Enter any prompt..."></textarea>
+
+        <div class="card-actions">
+            <button class="btn-primary" (click)="compare()" [disabled]="loading">
+                <span *ngIf="!loading">Compare Temperatures →</span>
+                <span *ngIf="loading" class="spinner">Running both…</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Error -->
+    <div class="error-banner" *ngIf="error">⚠️ {{ error }}</div>
+
+    <!-- Results side-by-side -->
+    <div *ngIf="result" class="two-col">
+
+        <!-- Temp 0 -->
+        <div class="card temp-card temp-zero">
+            <div class="temp-header">
+                <span class="temp-badge cold">temp = 0</span>
+                <span class="temp-desc">Focused · Deterministic · Predictable</span>
+            </div>
+            <div class="temp-output">{{ result.temperature_0 }}</div>
+            <div class="temp-meta">
+                <span>Same result every run</span>
+                <span class="dot">·</span>
+                <span>Best for: facts, code, data</span>
+            </div>
+        </div>
+
+        <!-- Temp 1 -->
+        <div class="card temp-card temp-one">
+            <div class="temp-header">
+                <span class="temp-badge warm">temp = 1</span>
+                <span class="temp-desc">Creative · Variable · Expressive</span>
+            </div>
+            <div class="temp-output">{{ result.temperature_1 }}</div>
+            <div class="temp-meta">
+                <span>Changes each run</span>
+                <span class="dot">·</span>
+                <span>Best for: writing, brainstorm</span>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Explanation -->
+    <div class="card info-card" *ngIf="result">
+        <div class="info-icon">💡</div>
+        <div class="info-text">
+            <strong>Temperature</strong> controls how random the model's token selection is.
+            At <strong>0</strong>, Claude always picks the highest-probability next token — same output every time.
+            At <strong>1</strong>, Claude samples from the distribution — different, more varied outputs each run.
+        </div>
+    </div>
+
+</div>
