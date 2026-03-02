@@ -7,6 +7,9 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from typing import Optional
 
+# Load environment variables from .env file (if exists)
+from dotenv import load_dotenv
+load_dotenv()
 
 app = FastAPI(title="Prompt Ops API", version="1.0.0")
 
@@ -77,14 +80,14 @@ def analyze_tokens(req: TokenRequest):
 
     return {
         "original_text": text,
-        "char_count": chars,
+        "character_count": chars,
         "word_count": len(words),
         "estimated_tokens": estimated_tokens,
         "context_window_size": context_window,
         "tokens_remaining": context_window - estimated_tokens,
         "percent_used": percent_used,
-        "token_chunks": token_chunks[:80],  # limit for display
-        "analogy": (
+        "chunks": [c["text"] for c in token_chunks[:80]],
+        "explanation": (
             f"Your text uses about {estimated_tokens} tokens — "
             f"like filling {percent_used:.4f}% of a {context_window:,}-seat stadium."
         ),
@@ -146,21 +149,21 @@ def generate_json(req: JsonSchemaRequest):
         parsed = json.loads(clean)
 
         return {
-            "system_prompt": JSON_SYSTEM_PROMPT,
+            "system_prompt_used": JSON_SYSTEM_PROMPT,
             "user_prompt": req.user_prompt,
             "raw_response": raw,
             "parsed_json": parsed,
             "schema": PRODUCT_SCHEMA,
-            "valid": True,
+            "valid_json": True,
         }
     except json.JSONDecodeError as e:
         return {
-            "system_prompt": JSON_SYSTEM_PROMPT,
+            "system_prompt_used": JSON_SYSTEM_PROMPT,
             "user_prompt": req.user_prompt,
             "raw_response": raw if "raw" in locals() else "",
             "parsed_json": None,
             "schema": PRODUCT_SCHEMA,
-            "valid": False,
+            "valid_json": False,
             "error": str(e),
         }
     except Exception as e:
