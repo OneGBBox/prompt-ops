@@ -1,1 +1,77 @@
-<p>few-shot works!</p>
+<div class="page-container">
+
+    <!-- Header -->
+    <div class="page-header">
+        <div class="concept-badge">04</div>
+        <div>
+            <h1 class="page-title">🎯 Few-Shot Prompting</h1>
+            <p class="page-subtitle">Give the model 3 examples — it learns your exact IT ticket format without extra
+                instructions.</p>
+        </div>
+    </div>
+
+    <!-- Presets -->
+    <div class="presets-row">
+        <span class="presets-label">Try a preset:</span>
+        <button *ngFor="let p of presets" class="preset-btn" (click)="usePreset(p)">{{ p | slice:0:35 }}…</button>
+    </div>
+
+    <!-- Input Card -->
+    <div class="card">
+        <label class="card-label">IT Issue (plain English)</label>
+        <textarea class="input-textarea" [(ngModel)]="userInput" rows="3"
+            placeholder="Describe an IT problem..."></textarea>
+
+        <div class="card-actions">
+            <button class="btn-secondary" (click)="showMessages = !showMessages">
+                {{ showMessages ? 'Hide' : 'Show' }} Messages Sent
+            </button>
+            <button class="btn-primary" (click)="generate()" [disabled]="loading">
+                <span *ngIf="!loading">Generate Ticket →</span>
+                <span *ngIf="loading" class="spinner">Generating…</span>
+            </button>
+        </div>
+
+        <!-- Messages Preview -->
+        <div class="system-prompt-box" *ngIf="showMessages && result?.messages_sent">
+            <div class="system-prompt-label">Full Message Array Sent to Claude (including few-shot examples)</div>
+            <pre class="code-block">{{ messagesJson }}</pre>
+        </div>
+    </div>
+
+    <!-- Error -->
+    <div class="error-banner" *ngIf="error">⚠️ {{ error }}</div>
+
+    <!-- Result -->
+    <div *ngIf="result" class="results-grid">
+
+        <!-- Formatted Ticket -->
+        <div class="card ticket-card">
+            <div class="section-header">
+                <div class="section-title">🎫 Generated IT Ticket</div>
+                <span class="badge-success">Format Matched</span>
+            </div>
+
+            <div class="ticket-lines">
+                <div *ngFor="let line of outputLines()" class="ticket-line">
+                    <span class="ticket-icon">{{ line.icon }}</span>
+                    <span class="ticket-value">{{ line.value }}</span>
+                </div>
+            </div>
+
+            <!-- Raw output fallback -->
+            <pre class="code-block muted" *ngIf="!outputLines().length">{{ result.output }}</pre>
+        </div>
+
+        <!-- How Few-Shot Works -->
+        <div class="card info-card">
+            <div class="info-icon">💡</div>
+            <div class="info-text">
+                <strong>Few-shot prompting</strong> works by including input→output pairs directly in the conversation.
+                The model learns the pattern from examples — no fine-tuning or special training required.
+                The more consistent your examples, the more reliably the model follows the format.
+            </div>
+        </div>
+
+    </div>
+</div>
