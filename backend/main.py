@@ -117,8 +117,8 @@ Always return a JSON object matching this exact schema:
   "price":    number   (USD, e.g. 29.99),
   "category": string   (one of: "electronics", "clothing", "food", "other"),
   "in_stock": boolean,
-  "tags":     string[] (2–5 descriptive tags),
-  "rating":   number   (0.0 – 5.0)
+  "tags":     string[] (2-5 descriptive tags),
+  "rating":   number   (0.0 - 5.0)
 }
 
 Rules:
@@ -205,15 +205,15 @@ def compare_temperature(req: TemperatureRequest):
 FEW_SHOT_EXAMPLES = [
     {
         "user": "My laptop won't turn on",
-        "assistant": "🔴 ISSUE: Device power failure\n📋 CATEGORY: Hardware\n⚡ URGENCY: High\n🔧 NEXT STEP: Check power cable, then battery\n📊 TICKET: #HW-001",
+        "assistant": " ISSUE: Device power failure\n CATEGORY: Hardware\n URGENCY: High\n NEXT STEP: Check power cable, then battery\n TICKET: #HW-001",
     },
     {
         "user": "I forgot my password",
-        "assistant": "🔴 ISSUE: Authentication failure\n📋 CATEGORY: Account Access\n⚡ URGENCY: Medium\n🔧 NEXT STEP: Use password reset link in login page\n📊 TICKET: #AC-002",
+        "assistant": " ISSUE: Authentication failure\n CATEGORY: Account Access\n URGENCY: Medium\n NEXT STEP: Use password reset link in login page\n TICKET: #AC-002",
     },
     {
         "user": "The app is running slowly",
-        "assistant": "🔴 ISSUE: Performance degradation\n📋 CATEGORY: Software\n⚡ URGENCY: Low\n🔧 NEXT STEP: Clear cache, restart application\n📊 TICKET: #SW-003",
+        "assistant": " ISSUE: Performance degradation\n CATEGORY: Software\n URGENCY: Low\n NEXT STEP: Clear cache, restart application\n TICKET: #SW-003",
     },
 ]
 
